@@ -1,46 +1,95 @@
 import { useId } from 'react';
 import type { SVGAttributes } from 'react';
 
-// Sararia mark: a tied sapu lidi drawn as a triangle. Uses currentColor so
-// callers tint it with a text-* class.
-export default function AppLogoIcon(props: SVGAttributes<SVGElement>) {
+// Sararia Tasks glyph: a clipboard whose clip is the family "tie" band, with
+// checked rows cut out of the board (see sararia-logo/FAMILY.md). Uses
+// currentColor so callers tint it with a text-* class. Pass `small` when it
+// renders at 32px or below: one large check with heavier cuts stays legible.
+// Mask shapes set fill explicitly: callers pass fill-current, which would
+// otherwise be inherited into the mask and stop the cuts from showing.
+export default function AppLogoIcon({
+    small = false,
+    ...props
+}: SVGAttributes<SVGElement> & { small?: boolean }) {
     const maskId = useId();
 
     return (
         <svg
             {...props}
-            viewBox="13.78 16.5 72.44 64"
+            viewBox="18 15 64 64"
             xmlns="http://www.w3.org/2000/svg"
         >
             <defs>
                 <mask id={maskId}>
                     <rect width="100" height="100" fill="#fff" />
-                    <rect y="30.9" width="100" height="1.5" />
-                    <rect y="37.6" width="100" height="1.5" />
-                    <g stroke="#000" strokeWidth="1.7">
-                        <path d="M42.69 39.1L27.48 83" />
-                        <path d="M47.56 39.1L42.49 83" />
-                        <path d="M52.44 39.1L57.51 83" />
-                        <path d="M57.31 39.1L72.52 83" />
+                    {small ? (
+                        <rect
+                            x="34.4"
+                            y="15.4"
+                            width="31.2"
+                            height="13.2"
+                            rx="6.6"
+                            fill="#000"
+                        />
+                    ) : (
+                        <rect
+                            x="35.5"
+                            y="17.9"
+                            width="29"
+                            height="8.2"
+                            rx="4.1"
+                            fill="#000"
+                        />
+                    )}
+                    <g
+                        fill="none"
+                        stroke="#000"
+                        strokeWidth={small ? 4 : 1.7}
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                    >
+                        {small ? (
+                            <path d="M37 53L45 61L63 43" />
+                        ) : (
+                            [38.5, 52, 65.5].map((y) => (
+                                <g key={y}>
+                                    <path
+                                        d={`M34 ${y}L36.9 ${y + 2.9}L42.6 ${y - 2.9}`}
+                                    />
+                                    <path d={`M47.5 ${y}H65`} />
+                                </g>
+                            ))
+                        )}
                     </g>
                 </mask>
             </defs>
             <path
-                d="M50 18L85.22 79H14.78Z"
+                d="M28 22H72V78H28Z"
                 fill="currentColor"
                 stroke="currentColor"
                 strokeWidth="1.2"
                 strokeLinejoin="round"
                 mask={`url(#${maskId})`}
             />
-            <rect
-                x="36.99"
-                y="32.4"
-                width="26.03"
-                height="5.2"
-                rx="2.6"
-                fill="currentColor"
-            />
+            {small ? (
+                <rect
+                    x="37"
+                    y="18"
+                    width="26"
+                    height="8"
+                    rx="4"
+                    fill="currentColor"
+                />
+            ) : (
+                <rect
+                    x="37"
+                    y="19.4"
+                    width="26"
+                    height="5.2"
+                    rx="2.6"
+                    fill="currentColor"
+                />
+            )}
         </svg>
     );
 }
