@@ -47,7 +47,7 @@ type Turn = {
     settled?: 'applied' | 'dismissed';
 };
 
-const MODEL_STORAGE_KEY = 'headway.ai-model';
+const MODEL_STORAGE_KEY = 'sararia-tasks.ai-model';
 
 const OPERATION_STYLE: Record<
     AiOperation['op'],

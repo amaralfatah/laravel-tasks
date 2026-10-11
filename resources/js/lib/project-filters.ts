@@ -1,6 +1,6 @@
 import type { TaskFilterState } from '@/types/tasks';
 
-const STORAGE_PREFIX = 'headway:project-filters:';
+const STORAGE_PREFIX = 'sararia-tasks:project-filters:';
 
 /**
  * Filter keys that represent active task filtering in query parameters.

@@ -83,7 +83,7 @@ class WorkloadExport
         $spreadsheet->getProperties()
             ->setTitle($portfolio ?? ($people[0]['name'] ?? 'Project Management'))
             ->setSubject('Project Management')
-            ->setCreator('Headway');
+            ->setCreator('Sararia Tasks');
 
         [$from, $to] = $this->range($people);
         $grid = new TimelineGrid($zoom, $from, $to);

@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Hash;
  */
 class MakeSuperAdmin extends Command
 {
-    protected $signature = 'headway:super-admin
+    protected $signature = 'tasks:super-admin
                             {email : Email of the operator account}
                             {--name= : Display name when the account is created}
                             {--password= : Password when the account is created}';

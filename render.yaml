@@ -10,7 +10,7 @@ services:
     healthCheckPath: /up
     envVars:
       - key: APP_NAME
-        value: Headway
+        value: Sararia Tasks
       - key: APP_KEY
         sync: false
       - key: APP_URL

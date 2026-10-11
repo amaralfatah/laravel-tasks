@@ -12,7 +12,7 @@ use Illuminate\Validation\Validator;
  * Profile and activation, as the operator edits them.
  *
  * `is_super_admin` is deliberately absent. Promoting an operator stays with
- * `headway:super-admin`: it is the one right that can lock the platform's
+ * `tasks:super-admin`: it is the one right that can lock the platform's
  * operators out of their own console, and a console button is too easy a way
  * to do that by accident.
  */
