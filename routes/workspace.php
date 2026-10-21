@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Route;
  * interface itself stays Indonesian. Mixing the two in URLs only made links
  * harder to guess.
  */
-Route::middleware(['auth', 'workspace'])->group(function () {
+Route::middleware(['auth', 'verified', 'workspace'])->group(function () {
     // The structure itself is master data an operator maintains (see
     // routes/organization.php); a leader only searches it to place someone.
     Route::get('org-units/search', [OrgUnitController::class, 'search'])->name('org-units.search');

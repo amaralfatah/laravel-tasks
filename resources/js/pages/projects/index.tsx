@@ -1,4 +1,4 @@
-import { Head, Link, router, useForm } from '@inertiajs/react';
+import { Head, Link, router, useForm, usePage } from '@inertiajs/react';
 import { FolderKanban, Plus } from 'lucide-react';
 import { useState } from 'react';
 import InputError from '@/components/input-error';
@@ -57,6 +57,11 @@ export default function Projects({
     can: { create: boolean };
     openCreate: boolean;
 }) {
+    // A solo or flat team workspace has no org tree below its root, so every
+    // project lands on that one unit and the unit picker would only offer it.
+    const scale = usePage().props.tenancy.workspace?.scale ?? 'solo';
+    const hasOrgTree = scale === 'company' || scale === 'holding';
+
     const [createOpen, setCreateOpen] = useState(openCreate && can.create);
     // Once the key is typed by hand it stops following the name, the way the
     // Jira create form behaves.
@@ -110,7 +115,11 @@ export default function Projects({
                 <div className="flex flex-wrap items-start justify-between gap-4">
                     <PageHeader
                         title="Project"
-                        description={`${projects.length} project dalam cakupan Anda.`}
+                        description={
+                            hasOrgTree
+                                ? `${projects.length} project dalam cakupan Anda.`
+                                : `${projects.length} project di workspace ini.`
+                        }
                     />
 
                     {can.create && (
@@ -137,9 +146,9 @@ export default function Projects({
                                 <DialogHeader>
                                     <DialogTitle>Buat project</DialogTitle>
                                     <DialogDescription>
-                                        Project menempel pada satu unit
-                                        organisasi. Anggota bisa ditambahkan
-                                        setelahnya.
+                                        {hasOrgTree
+                                            ? 'Project menempel pada satu unit organisasi. Anggota bisa ditambahkan setelahnya.'
+                                            : 'Anggota bisa ditambahkan setelahnya.'}
                                     </DialogDescription>
                                 </DialogHeader>
 
@@ -212,27 +221,33 @@ export default function Projects({
                                         <InputError message={form.errors.key} />
                                     </div>
 
-                                    <div className="grid gap-2">
-                                        <Label>Unit</Label>
-                                        {/* A member who leads nobody may only
+                                    {hasOrgTree && (
+                                        <div className="grid gap-2">
+                                            <Label>Unit</Label>
+                                            {/* A member who leads nobody may only
                                             start a project in their own unit,
                                             which the server enforces anyway. */}
-                                        <OrgUnitPicker
-                                            value={createUnit}
-                                            canChoose={unitPicker.can_choose}
-                                            emptyLabel="Belum dipilih"
-                                            onChange={(picked) => {
-                                                setCreateUnit(picked);
-                                                form.setData(
-                                                    'org_unit_id',
-                                                    picked?.id ?? null,
-                                                );
-                                            }}
-                                        />
-                                        <InputError
-                                            message={form.errors.org_unit_id}
-                                        />
-                                    </div>
+                                            <OrgUnitPicker
+                                                value={createUnit}
+                                                canChoose={
+                                                    unitPicker.can_choose
+                                                }
+                                                emptyLabel="Belum dipilih"
+                                                onChange={(picked) => {
+                                                    setCreateUnit(picked);
+                                                    form.setData(
+                                                        'org_unit_id',
+                                                        picked?.id ?? null,
+                                                    );
+                                                }}
+                                            />
+                                            <InputError
+                                                message={
+                                                    form.errors.org_unit_id
+                                                }
+                                            />
+                                        </div>
+                                    )}
 
                                     <div className="grid gap-2">
                                         <Label htmlFor="project-description">
@@ -282,17 +297,21 @@ export default function Projects({
                 </div>
 
                 <div className="flex flex-wrap gap-3">
-                    <div className="w-full sm:w-72">
-                        <OrgUnitPicker
-                            value={filters.org_unit}
-                            canChoose={unitPicker.can_choose}
-                            emptyLabel="Semua unit"
-                            clearLabel="Semua unit"
-                            onChange={(picked) =>
-                                applyFilter({ org_unit_id: picked?.id ?? null })
-                            }
-                        />
-                    </div>
+                    {hasOrgTree && (
+                        <div className="w-full sm:w-72">
+                            <OrgUnitPicker
+                                value={filters.org_unit}
+                                canChoose={unitPicker.can_choose}
+                                emptyLabel="Semua unit"
+                                clearLabel="Semua unit"
+                                onChange={(picked) =>
+                                    applyFilter({
+                                        org_unit_id: picked?.id ?? null,
+                                    })
+                                }
+                            />
+                        </div>
+                    )}
 
                     <Select
                         value={filters.status || ALL}
@@ -333,7 +352,9 @@ export default function Projects({
                         <p className="font-medium">Belum ada project</p>
                         <p className="mx-auto mt-1 max-w-sm text-sm text-muted-foreground">
                             {can.create
-                                ? 'Buat project pertama dan tempelkan ke unit yang sesuai.'
+                                ? hasOrgTree
+                                    ? 'Buat project pertama dan tempelkan ke unit yang sesuai.'
+                                    : 'Buat project pertama untuk mulai mencatat task.'
                                 : 'Anda akan melihat project setelah didaftarkan sebagai anggota.'}
                         </p>
                     </div>
@@ -374,8 +395,16 @@ export default function Projects({
                                     )}
 
                                     <div className="mt-auto flex items-center gap-3 pt-2 text-xs text-muted-foreground">
-                                        <span>{project.org_unit.name}</span>
-                                        <span aria-hidden="true">·</span>
+                                        {hasOrgTree && (
+                                            <>
+                                                <span>
+                                                    {project.org_unit.name}
+                                                </span>
+                                                <span aria-hidden="true">
+                                                    ·
+                                                </span>
+                                            </>
+                                        )}
                                         <span className="tabular-nums">
                                             {project.members_count} anggota
                                         </span>

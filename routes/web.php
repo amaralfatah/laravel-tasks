@@ -17,12 +17,16 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/', HomeController::class)->name('home');
     Route::get('dashboard', HomeController::class)->name('dashboard');
 
-    Route::get('workspace/none', [WorkspaceContextController::class, 'none'])->name('workspace.none');
-    // Self-serve: someone who belongs to no workspace starts their own.
-    Route::post('workspace/start', [WorkspaceContextController::class, 'start'])
-        ->middleware('throttle:6,1')
-        ->name('workspace.start');
-    Route::post('workspace/{workspace}/change', [WorkspaceContextController::class, 'change'])->name('workspace.change');
+    // A signed-up account confirms its address before it may start or enter a
+    // workspace; invited and operator-made accounts arrive already verified.
+    Route::middleware('verified')->group(function () {
+        Route::get('workspace/none', [WorkspaceContextController::class, 'none'])->name('workspace.none');
+        // Self-serve: someone who belongs to no workspace starts their own.
+        Route::post('workspace/start', [WorkspaceContextController::class, 'start'])
+            ->middleware('throttle:6,1')
+            ->name('workspace.start');
+        Route::post('workspace/{workspace}/change', [WorkspaceContextController::class, 'change'])->name('workspace.change');
+    });
 });
 
 require __DIR__.'/workspaces.php';

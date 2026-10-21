@@ -35,7 +35,7 @@ Route::middleware(['auth', 'verified', 'workspace:optional'])->group(function ()
  * rather than `workspace:optional`: there is nothing to rename until one is
  * active, and the page reads the tenant instead of taking an id in the URL.
  */
-Route::middleware(['auth', 'workspace'])->group(function () {
+Route::middleware(['auth', 'verified', 'workspace'])->group(function () {
     Route::get('settings/workspace', [WorkspaceController::class, 'edit'])->name('workspace.settings.edit');
     Route::patch('settings/workspace', [WorkspaceController::class, 'update'])->name('workspace.settings.update');
 });

@@ -8,15 +8,21 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
+import { register } from '@/routes';
 import { store } from '@/routes/login';
 import { request } from '@/routes/password';
 
 type Props = {
     status?: string;
     canResetPassword: boolean;
+    canRegister: boolean;
 };
 
-export default function Login({ status, canResetPassword }: Props) {
+export default function Login({
+    status,
+    canResetPassword,
+    canRegister,
+}: Props) {
     return (
         <>
             <Head title="Masuk" />
@@ -41,7 +47,7 @@ export default function Login({ status, canResetPassword }: Props) {
                                     autoFocus
                                     tabIndex={1}
                                     autoComplete="email"
-                                    placeholder="nama@perusahaan.com"
+                                    placeholder="nama@contoh.com"
                                 />
                                 <InputError message={errors.email} />
                             </div>
@@ -91,10 +97,14 @@ export default function Login({ status, canResetPassword }: Props) {
                             </Button>
                         </div>
 
-                        <p className="text-center text-sm text-muted-foreground">
-                            Akun hanya dibuat lewat undangan. Hubungi admin
-                            perusahaan Anda jika belum punya akses.
-                        </p>
+                        {canRegister && (
+                            <p className="text-center text-sm text-muted-foreground">
+                                Belum punya akun?{' '}
+                                <TextLink href={register()} tabIndex={6}>
+                                    Daftar
+                                </TextLink>
+                            </p>
+                        )}
                     </>
                 )}
             </Form>

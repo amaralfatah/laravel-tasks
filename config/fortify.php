@@ -162,8 +162,9 @@ return [
     */
 
     'features' => [
-        // AUTH-5: accounts are created from workspace invitations only.
-        // Features::registration(),
+        // Anyone may open an account and start a workspace of their own;
+        // invitations remain the way into someone else's.
+        Features::registration(),
         Features::resetPasswords(),
         Features::emailVerification(),
         Features::twoFactorAuthentication([
