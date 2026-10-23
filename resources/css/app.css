@@ -191,6 +191,17 @@
     --shadow-xl: none;
     --shadow-2xl: none;
 
+    /*
+     * Motion. `ease-sheet` is the curve iOS drives its sheets and drawers with:
+     * a fast start that hands the move straight to the eye, then a long,
+     * critically damped settle with no overshoot. Nothing here bounces —
+     * bounce is earned by a flick, and this interface has no flick gestures.
+     * `ease-sheet-in` is its mirror, so a surface leaves along the path it
+     * came in on.
+     */
+    --ease-sheet: cubic-bezier(0.32, 0.72, 0, 1);
+    --ease-sheet-in: cubic-bezier(0.72, 0, 1, 0.32);
+
     --tracking-tighter: -0.042em;
     --tracking-tight: -0.032em;
     --tracking-normal: -0.022em;
@@ -360,6 +371,25 @@
     }
 
     /*
+     * Feedback lands on the press, not the release: drop the grey tap flash
+     * WebKit paints late, and the double-tap-to-zoom wait that holds back a
+     * tap on touch screens.
+     */
+    :where(
+        a,
+        button,
+        [role='button'],
+        input,
+        select,
+        textarea,
+        label,
+        summary
+    ) {
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+    }
+
+    /*
      * Negative tracking is a display-size effect. At 12px and below it turns
      * into mush, so those sizes opt back out.
      */
@@ -383,6 +413,10 @@
     /*
      * Honour the OS reduced-motion setting for every transition and animation,
      * including the ones Radix and tw-animate-css inject.
+     *
+     * Reduced motion is not no feedback. A menu, dialog or sheet still
+     * cross-fades in and out, it just stops sliding and zooming — the opacity
+     * change is what tells the user something arrived.
      */
     @media (prefers-reduced-motion: reduce) {
         *,
@@ -392,6 +426,20 @@
             animation-iteration-count: 1 !important;
             transition-duration: 0.01ms !important;
             scroll-behavior: auto !important;
+            --tw-enter-scale: 1 !important;
+            --tw-exit-scale: 1 !important;
+            --tw-enter-rotate: 0 !important;
+            --tw-exit-rotate: 0 !important;
+            --tw-enter-translate-x: 0 !important;
+            --tw-exit-translate-x: 0 !important;
+            --tw-enter-translate-y: 0 !important;
+            --tw-exit-translate-y: 0 !important;
+        }
+
+        .animate-in,
+        .animate-out {
+            animation-duration: 150ms !important;
+            animation-timing-function: ease !important;
         }
     }
 
@@ -407,5 +455,27 @@
         );
         backdrop-filter: saturate(180%) blur(20px);
         -webkit-backdrop-filter: saturate(180%) blur(20px);
+    }
+
+    /*
+     * The frosted strip is only legible while the OS lets it be. Reduced
+     * transparency turns it into the solid surface it imitates, and increased
+     * contrast does the same and keeps the hairline under it at full strength.
+     */
+    @media (prefers-reduced-transparency: reduce) {
+        .surface-frosted {
+            background-color: var(--background);
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+        }
+    }
+
+    @media (prefers-contrast: more) {
+        .surface-frosted {
+            background-color: var(--background);
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+            border-color: var(--foreground);
+        }
     }
 }

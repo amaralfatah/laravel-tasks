@@ -30,7 +30,7 @@ export default function AppearanceToggleTab({
                     key={value}
                     onClick={() => updateAppearance(value)}
                     className={cn(
-                        'flex items-center rounded-sm border px-3 py-1.5 transition-[color,background-color,border-color,transform] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring active:scale-[0.95]',
+                        'flex items-center rounded-sm border px-3 py-1.5 transition-[color,background-color,border-color,transform] duration-200 ease-sheet focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring active:scale-[0.95] active:duration-75',
                         // The dark tiles sit a single step apart, so the
                         // selected chip needs its own hairline to read — tone
                         // alone only separates them on a light surface.

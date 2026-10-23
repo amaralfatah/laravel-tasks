@@ -12,9 +12,12 @@ import { cn } from "@/lib/utils"
  *
  * What the document does keep here: the single Action Blue accent, no shadow
  * on a control, `scale(0.95)` as the press state, and a 2px outline as focus.
+ *
+ * The press lands in 75ms so it reads as the pointer going down, not as a
+ * reply to it; the release settles back on the sheet curve.
  */
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-sm text-sm font-normal transition-[color,background-color,border-color,transform] active:scale-[0.95] disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:shrink-0 outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring aria-invalid:border-destructive",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-sm text-sm font-normal transition-[color,background-color,border-color,transform] duration-200 ease-sheet active:scale-[0.95] active:duration-75 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:shrink-0 outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring aria-invalid:border-destructive",
   {
     variants: {
       variant: {
