@@ -23,10 +23,13 @@
         <style>
             html {
                 background-color: #ffffff;
+                color-scheme: light;
             }
 
+            {{-- Matches --background in .dark, so the first paint and overscroll do not flash a different black. --}}
             html.dark {
-                background-color: #1d1d1f;
+                background-color: #1f1f21;
+                color-scheme: dark;
             }
         </style>
 

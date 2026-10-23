@@ -234,13 +234,19 @@
     --secondary: #f4f4f5;
     --secondary-foreground: #333333;
     --muted: #f4f4f5;
-    --muted-foreground: #7a7a7a;
+    /*
+     * Apple's secondary label grey. #7a7a7a is the catalog's disabled and
+     * fine-print tone; as the app's secondary text it fell under 4.5:1 on
+     * white (4.3) and on the muted header rows (3.9).
+     */
+    --muted-foreground: #6e6e73;
     --accent: #ebebec;
     --accent-foreground: #1d1d1f;
 
     --destructive: #d70015;
     --destructive-foreground: #ffffff;
-    --success: #248a3d;
+    /* One step darker than system green so "Tersimpan" clears 4.5:1 on white. */
+    --success: #1f7a35;
     --warning: #a04f00;
 
     --border: #e0e0e0;

@@ -22,8 +22,13 @@ export default function PasswordInput({
             <button
                 type="button"
                 onClick={() => setShowPassword((prev) => !prev)}
-                className="absolute inset-y-0 right-0 flex items-center rounded-r-md px-3 text-muted-foreground hover:text-foreground focus-visible:ring-[3px] focus-visible:ring-ring focus-visible:outline-none"
-                aria-label={showPassword ? 'Hide password' : 'Show password'}
+                className="absolute inset-y-0 right-0 flex items-center rounded-r-sm px-3 text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring"
+                aria-label={
+                    showPassword
+                        ? 'Sembunyikan kata sandi'
+                        : 'Tampilkan kata sandi'
+                }
+                aria-pressed={showPassword}
                 tabIndex={-1}
             >
                 {showPassword ? (

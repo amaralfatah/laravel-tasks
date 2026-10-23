@@ -38,13 +38,20 @@ export default function Register({ passwordRules }: Props) {
                                     id="name"
                                     type="text"
                                     name="name"
+                                    aria-invalid={Boolean(errors.name)}
+                                    aria-describedby={
+                                        errors.name ? 'name-error' : undefined
+                                    }
                                     required
                                     autoFocus
                                     tabIndex={1}
                                     autoComplete="name"
                                     placeholder="Nama lengkap"
                                 />
-                                <InputError message={errors.name} />
+                                <InputError
+                                    id="name-error"
+                                    message={errors.name}
+                                />
                             </div>
 
                             <div className="grid gap-2">
@@ -53,12 +60,19 @@ export default function Register({ passwordRules }: Props) {
                                     id="email"
                                     type="email"
                                     name="email"
+                                    aria-invalid={Boolean(errors.email)}
+                                    aria-describedby={
+                                        errors.email ? 'email-error' : undefined
+                                    }
                                     required
                                     tabIndex={2}
                                     autoComplete="email"
                                     placeholder="nama@contoh.com"
                                 />
-                                <InputError message={errors.email} />
+                                <InputError
+                                    id="email-error"
+                                    message={errors.email}
+                                />
                             </div>
 
                             <div className="grid gap-2">
@@ -66,13 +80,22 @@ export default function Register({ passwordRules }: Props) {
                                 <PasswordInput
                                     id="password"
                                     name="password"
+                                    aria-invalid={Boolean(errors.password)}
+                                    aria-describedby={
+                                        errors.password
+                                            ? 'password-error'
+                                            : undefined
+                                    }
                                     required
                                     tabIndex={3}
                                     autoComplete="new-password"
                                     placeholder="Kata sandi"
                                     passwordrules={passwordRules}
                                 />
-                                <InputError message={errors.password} />
+                                <InputError
+                                    id="password-error"
+                                    message={errors.password}
+                                />
                             </div>
 
                             <div className="grid gap-2">
@@ -82,6 +105,14 @@ export default function Register({ passwordRules }: Props) {
                                 <PasswordInput
                                     id="password_confirmation"
                                     name="password_confirmation"
+                                    aria-invalid={Boolean(
+                                        errors.password_confirmation,
+                                    )}
+                                    aria-describedby={
+                                        errors.password_confirmation
+                                            ? 'password_confirmation-error'
+                                            : undefined
+                                    }
                                     required
                                     tabIndex={4}
                                     autoComplete="new-password"
@@ -89,6 +120,7 @@ export default function Register({ passwordRules }: Props) {
                                     passwordrules={passwordRules}
                                 />
                                 <InputError
+                                    id="password_confirmation-error"
                                     message={errors.password_confirmation}
                                 />
                             </div>

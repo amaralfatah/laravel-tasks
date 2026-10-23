@@ -22,8 +22,12 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default: "bg-primary text-primary-foreground hover:bg-primary/90",
+        /**
+         * Dark mode's #ff453a reads well as text but carries white at only
+         * 3.4:1 as a fill, so the filled button deepens it a step there.
+         */
         destructive:
-          "bg-destructive text-destructive-foreground hover:bg-destructive/90 focus-visible:outline-destructive",
+          "bg-destructive text-destructive-foreground hover:bg-destructive/90 focus-visible:outline-destructive dark:bg-[color-mix(in_srgb,var(--destructive)_80%,black)] dark:hover:bg-[color-mix(in_srgb,var(--destructive)_72%,black)]",
         /** The neutral secondary: hairline instead of fill. */
         outline: "border border-border bg-card text-foreground hover:bg-accent",
         /** The blue-hairline secondary, for the action beside a primary. */

@@ -303,6 +303,10 @@ export function TaskAiChat({
 
     return (
         <>
+            {/* Clears room under the page so the launcher never sits on the
+                last row's actions once the content is scrolled to the end. */}
+            <div aria-hidden="true" className="h-16 sm:h-20" />
+
             <button
                 ref={launcher}
                 type="button"
@@ -343,9 +347,14 @@ export function TaskAiChat({
                             'fixed z-40 flex flex-col overflow-hidden bg-popover text-popover-foreground shadow-2xl',
                             'inset-x-0 bottom-0 max-h-[85dvh] rounded-t-2xl rounded-b-none border-t border-border',
                             'sm:inset-x-auto sm:right-5 sm:bottom-5 sm:max-h-[80vh] sm:w-104 sm:rounded-2xl sm:border',
-                            // Grows out of the bottom on mobile, bottom-right corner on desktop.
-                            'origin-bottom animate-in duration-200 zoom-in-95 fade-in sm:origin-bottom-right',
-                            'motion-reduce:animate-none',
+                            // Rises from the bottom edge on mobile, the way every
+                            // other sheet does; grows out of the launcher's
+                            // corner on desktop.
+                            'animate-in duration-300 ease-sheet fade-in slide-in-from-bottom',
+                            'sm:origin-bottom-right sm:duration-200 sm:zoom-in-95 sm:[--tw-enter-translate-y:0]',
+                            // No `motion-reduce:animate-none`: the global
+                            // reduced-motion rule already drops the slide and
+                            // zoom and keeps the cross-fade that says it arrived.
                         )}
                     >
                         <header className="flex items-center gap-2 border-b px-4 py-3">
@@ -407,7 +416,7 @@ export function TaskAiChat({
                             {turns.length === 0 && (
                                 <div className="space-y-3">
                                     <p className="text-sm text-muted-foreground">
-                                        Mau bikin task baru?.
+                                        Mau bikin task baru?
                                     </p>
 
                                     <ul className="space-y-1.5">

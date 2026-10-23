@@ -3,7 +3,8 @@ import {
     DragOverlay,
     KeyboardSensor,
     MeasuringStrategy,
-    PointerSensor,
+    MouseSensor,
+    TouchSensor,
     closestCorners,
     useDroppable,
     useSensor,
@@ -256,8 +257,14 @@ export default function ProjectBoard({
     }, [items]);
 
     const sensors = useSensors(
-        // A small distance threshold keeps a tap from becoming a drag.
-        useSensor(PointerSensor, { activationConstraint: { distance: 6 } }),
+        // A small distance threshold keeps a click from becoming a drag.
+        useSensor(MouseSensor, { activationConstraint: { distance: 6 } }),
+        // On touch a card lifts after a press-and-hold, as on iOS, so a swipe
+        // that starts on a card still scrolls the board instead of being
+        // swallowed by the drag.
+        useSensor(TouchSensor, {
+            activationConstraint: { delay: 250, tolerance: 5 },
+        }),
         useSensor(KeyboardSensor, {
             coordinateGetter: sortableKeyboardCoordinates,
         }),

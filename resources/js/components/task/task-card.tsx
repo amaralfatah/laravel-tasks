@@ -108,7 +108,10 @@ export function TaskCard({
                 // bleed into the column at the top of a long scroll.
                 'group rounded border border-border bg-card p-3 transition-colors',
                 draggable
-                    ? 'cursor-grab touch-none active:cursor-grabbing'
+                    ? // `touch-manipulation`, not `touch-none`: the touch
+                      // sensor lifts on a long press, so the finger must stay
+                      // free to scroll the column and the board.
+                      'cursor-grab touch-manipulation select-none [-webkit-touch-callout:none] active:cursor-grabbing'
                     : 'cursor-pointer',
                 'hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none',
                 // The card stays in place as a hollow slot while its clone

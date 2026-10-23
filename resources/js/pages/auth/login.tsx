@@ -27,6 +27,17 @@ export default function Login({
         <>
             <Head title="Masuk" />
 
+            {/* Above the form, where the eye lands after a reset link is
+                sent or a password is changed, not under the last link. */}
+            {status && (
+                <div
+                    role="status"
+                    className="text-center text-sm font-medium text-success"
+                >
+                    {status}
+                </div>
+            )}
+
             <PasskeyVerify />
 
             <Form
@@ -43,13 +54,20 @@ export default function Login({
                                     id="email"
                                     type="email"
                                     name="email"
+                                    aria-invalid={Boolean(errors.email)}
+                                    aria-describedby={
+                                        errors.email ? 'email-error' : undefined
+                                    }
                                     required
                                     autoFocus
                                     tabIndex={1}
                                     autoComplete="email"
                                     placeholder="nama@contoh.com"
                                 />
-                                <InputError message={errors.email} />
+                                <InputError
+                                    id="email-error"
+                                    message={errors.email}
+                                />
                             </div>
 
                             <div className="grid gap-2">
@@ -68,12 +86,21 @@ export default function Login({
                                 <PasswordInput
                                     id="password"
                                     name="password"
+                                    aria-invalid={Boolean(errors.password)}
+                                    aria-describedby={
+                                        errors.password
+                                            ? 'password-error'
+                                            : undefined
+                                    }
                                     required
                                     tabIndex={2}
                                     autoComplete="current-password"
                                     placeholder="Kata sandi"
                                 />
-                                <InputError message={errors.password} />
+                                <InputError
+                                    id="password-error"
+                                    message={errors.password}
+                                />
                             </div>
 
                             <div className="flex items-center space-x-3">
@@ -108,12 +135,6 @@ export default function Login({
                     </>
                 )}
             </Form>
-
-            {status && (
-                <div className="mb-4 text-center text-sm font-medium text-success">
-                    {status}
-                </div>
-            )}
         </>
     );
 }
